@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="font-family: 'Times New Roman', Times, serif;">Solution of Elliptic Equation On Annulus Using SEM</title>
+    <title style="font-family: 'Times New Roman', Times, serif;">Solution of Elliptic Equation On Circle Using SEM</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,84 +26,147 @@
                     </ul>
                 </div>
             </nav>
-            <h1>Solution of Elliptic Equation On Annulus Using SEM</h1>
+            <h1>Solution of Elliptic Equation On Circle Using SEM</h1>
 
             <div class="equation-container">
                 <div class="equation-heading">Equation:</div>
                 <div class="equation-wrapper">
                     <p id="equation">
-                        \(-&kappa;∆u(x, y) + &nu;_1(x, y)u_x(x, y) + &nu;_2(x, y)u_y(x, y) + &gamma;(x, y)u(x, y) = f(x, y) \text{ in } &Omega;\)<br>
+                        \(-κ∆u(x, y) + ν_1(x, y)u_x(x, y) + ν_2(x, y)u_y(x, y) + γ(x, y)u(x, y) = f(x, y) \text{ in } Ω\)<br>
                     </p>
-                    <div class="second-line">\(u(x, y) = g_i(x, y)\) &nbsp; or  &nbsp; \(\frac{du}{dx}(x, y) = g_i(x, y) \text{ on } &Gamma;_i\)</div>
+                    <div class="second-line">\(u(x, y) = g_i(x, y) \text{ on } Γ_i\) &nbsp; or  &nbsp; \(\frac{du}{dx}(x, y) = g_i(x, y) \text{ on } Γ_i\)</div>
                 </div>              
             </div>
             
 
-            <!-- Annulus -->
-            <canvas id="myCanvas" width="240" height="200"></canvas>
+            <!-- Circle -->
+            <canvas id="myCanvas" width="400" height="250"></canvas>
             <script>
             var canvas = document.getElementById("myCanvas");
             var ctx = canvas.getContext("2d");
-
-            // Define parameters
-            // setting position
-            var centerX = 100;
-            var centerY = 95;
-
-            var innerRadius = 30;
-            var outerRadii = [50, 70, 90]; // Radii for the outer circles
-
-            // Draw the outer circles
-            outerRadii.forEach(function(radius) {
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-            });
-
-            // Draw the inner circle
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
-            ctx.stroke();
-
-            // Draw the lines connecting the circles to form an annulus
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY + innerRadius); // Move to top point of last outer circle
-            ctx.lineTo(centerX, centerY + outerRadii[outerRadii.length - 1]); // Connect to bottom point of last outer circle
-            ctx.moveTo(centerX,centerY - innerRadius);
-            ctx.lineTo(centerX,centerY - outerRadii[outerRadii.length-1])
-            ctx.moveTo(centerX - outerRadii[outerRadii.length - 1], centerY); // Move to the left point of the outermost circle
-            ctx.lineTo(centerX - innerRadius, centerY);
-            ctx.moveTo(centerX + outerRadii[outerRadii.length - 1], centerY); // Move to the left point of the outermost circle
-            ctx.lineTo(centerX + innerRadius, centerY);
-            ctx.moveTo(centerX - (innerRadius*0.7071067812) , centerY - (innerRadius*0.7071067812)); // Move to the top-left corner
-            ctx.lineTo(centerX - (outerRadii[outerRadii.length-1]*0.7071067812) , centerY - (outerRadii[outerRadii.length-1]*0.7071067812)); // Connect to the bottom-right corner
-            ctx.moveTo(centerX - (innerRadius*0.7071067812) , centerY + (innerRadius*0.7071067812)); // Move to the top-left corner
-            ctx.lineTo(centerX - (outerRadii[outerRadii.length-1]*0.7071067812) , centerY + (outerRadii[outerRadii.length-1]*0.7071067812));
-            ctx.moveTo(centerX + (innerRadius*0.7071067812) , centerY - (innerRadius*0.7071067812)); // Move to the top-left corner
-            ctx.lineTo(centerX + (outerRadii[outerRadii.length-1]*0.7071067812) , centerY - (outerRadii[outerRadii.length-1]*0.7071067812));
-            ctx.moveTo(centerX + (innerRadius*0.7071067812) , centerY + (innerRadius*0.7071067812)); // Move to the top-left corner
-            ctx.lineTo(centerX + (outerRadii[outerRadii.length-1]*0.7071067812) , centerY + (outerRadii[outerRadii.length-1]*0.7071067812));
-            ctx.stroke();
-
-            // Draw the crossing lines
-            ctx.beginPath();
             
+            // Draw the circle
+            // Draw the circle
+            ctx.beginPath();
+            ctx.arc(200, 121, 100, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
             ctx.stroke();
+
+            // Calculate the square's side length
+            var squareSideLength = Math.sqrt(2) * 100; // Diagonal of the square
+
+            // Calculate the position of the square's top-left corner
+            var squareX = 200 - squareSideLength / 2;
+            var squareY = 121 - squareSideLength / 2;
+
+            // Calculate the gap between the circle and the square
+            var gap = 30; // Adjust the gap as needed
+
+            // Draw the square
+            ctx.beginPath();
+            ctx.rect(squareX + gap, squareY + gap, squareSideLength - 2 * gap, squareSideLength - 2 * gap);
+            ctx.stroke();
+            
+            // Calculated the corner of all rectangles 
+            // Calculate the positions of all corners of the square
+            // var squareTopRightX = squareX + squareSideLength - gap;
+            // var squareTopRightY = squareY + gap;
+            // var squareBottomRightX = squareX + squareSideLength - gap;
+            // var squareBottomRightY = squareY + squareSideLength - gap;
+            // var squareBottomLeftX = squareX + gap;
+            // var squareBottomLeftY = squareY + squareSideLength -  gap;
+
+            // Calculate the angle and intersection point for the top-left corner
+            var angleTL = Math.atan2(squareY + gap - 121, squareX + gap - 200);
+            var intersectXTL = 200 + 100 * Math.cos(angleTL);
+            var intersectYTL = 121 + 100 * Math.sin(angleTL);
+
+            // Draw the diagonal line from the top-left corner of the square to the intersection point
+            ctx.beginPath();
+            ctx.moveTo(squareX + gap, squareY + gap); // Move to top-left corner of square
+            ctx.lineTo(intersectXTL, intersectYTL); // Connect to circle's outer edge
+            ctx.stroke();
+
+            // Repeat the above steps for the other three corners
+            // Calculate the angle and intersection point for the top-right corner
+            var angleTR = Math.atan2(squareY + gap - 121, squareX + squareSideLength - gap - 200);
+            var intersectXTR = 200 + 100 * Math.cos(angleTR);
+            var intersectYTR = 121 + 100 * Math.sin(angleTR);
+
+            // Draw the diagonal line from the top-right corner of the square to the intersection point
+            ctx.beginPath();
+            ctx.moveTo(squareX + squareSideLength - gap, squareY + gap); // Move to top-right corner of square
+            ctx.lineTo(intersectXTR, intersectYTR); // Connect to circle's outer edge
+            ctx.stroke();
+
+            // Repeat the above steps for the bottom-left corner and bottom-right corner
+            // Calculate the angle and intersection point for the bottom-left corner
+            var angleBL = Math.atan2(squareY + squareSideLength - gap - 121, squareX + gap - 200);
+            var intersectXBL = 200 + 100 * Math.cos(angleBL);
+            var intersectYBL = 121 + 100 * Math.sin(angleBL);
+
+            // Draw the diagonal line from the bottom-left corner of the square to the intersection point
+            ctx.beginPath();
+            ctx.moveTo(squareX + gap, squareY + squareSideLength - gap); // Move to bottom-left corner of square
+            ctx.lineTo(intersectXBL, intersectYBL); // Connect to circle's outer edge
+            ctx.stroke();
+
+            // Calculate the angle and intersection point for the bottom-right corner
+            var angleBR = Math.atan2(squareY + squareSideLength - gap - 121, squareX + squareSideLength - gap - 200);
+            var intersectXBR = 200 + 100 * Math.cos(angleBR);
+            var intersectYBR = 121 + 100 * Math.sin(angleBR);
+
+            // Draw the diagonal line from the bottom-right corner of the square to the intersection point
+            ctx.beginPath();
+            ctx.moveTo(squareX + squareSideLength - gap, squareY + squareSideLength - gap); // Move to bottom-right corner of square
+            ctx.lineTo(intersectXBR, intersectYBR); // Connect to circle's outer edge
+            ctx.stroke();
+            
+            // Draw a center dot at the center of the circle
+             ctx.beginPath();
+             ctx.arc(200, 121, 2, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
+             ctx.fillStyle = "#605b5b"; // Set color to match the lines
+             ctx.fill();
+
+            // Label the center dot as (o₁, o₂)
+            ctx.font = "bold 12px Arial";
+            ctx.fillStyle = "#605b5b"; // Set darker color for the text
+            ctx.fillText("(O", 180, 112); // Adjust position as needed
+            ctx.font = "bold 16px Arial"; // Decrease font size for subscript
+            ctx.fillText(" ₁", 190, 112); // Adjust position as needed
+            ctx.font = "bold 12px Arial"; // Reset font size for regular text
+            ctx.fillText("  , O", 195, 112); // Adjust position as needed
+            ctx.font = "bold 16px Arial"; // Decrease font size for subscript
+            ctx.fillText("  ₂", 210, 112); // Adjust position as needed
+            ctx.font = "bold 12px Arial"; // Reset font size for regular text
+            ctx.fillText(" )", 220, 112); // Adjust position as needed
+
+            
+             // Draw gamma symbol in the right corner of the circle
+            ctx.font = "bold 16px Arial";
+            ctx.fillText("Γ", 297, 168); // Adjust position as needed
             </script>
- 
- 
+
+             
+
+
+            
             <!-- Input Boxes for o1, o2, and radius in radians -->
             <div class="equation-heading-container">
                 <div class="equation-headingnew">Domain Inputs :</div>
                 <div class="input-boxes">
+                    <!-- Input for o1 -->
+                    <div class="input-pair">
+                        <label for="o1" class="equation-label"><span class="mathjax" tabindex="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\( O_1 \) =</span></label>
+                        <input type="text" id="o1" />
+                    </div>
                     <!-- Input for o2 -->
                     <div class="input-pair">
-                        <label for="radius" class="equation-label parameter-label"><span id="radius-letter" class="mathjax">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\( r_1 \)</span> =</label>
-                        <input type="text" id="radius" />
+                        <label for="o2" class="equation-label parameter-labe"><span class="mathjax " tabindex="-1">\( O_2 \) =</span></label>
+                        <input type="text" id="o2" />
                     </div>
                     <!-- Input for radius -->
                     <div class="input-pair">
-                        <label for="radius" class="equation-label parameter-label"><span id="radius-letter" class="mathjax">\( r_2 \)</span> =</label>
+                        <label for="radius" class="equation-label parameter-label"><span id="radius-letter" class="mathjax">\( r \)</span> =</label>
                         <input type="text" id="radius" />
                     </div>
                 </div>
@@ -115,15 +180,16 @@
                 
                 <div class="input-containerk">
                     <label for="kappa" class="equation-label"><span id="kappa-letter" class="mathjax">\(\kappa \)</span> =</label>
-                    <input type="text" id="kappa" />
+                    <input type="text" id="kappa" placeholder="Enter function expression"  />
+                    <!-- <span id="kappa-mathjax" class="mathjax"></span> -->
                 </div>
             </div>
             
 
             <!-- Input Box for ν1(x, y) function -->
             <div class="input-boxes">
-                <label for="nu1" class="equation-label"><span class="mathjax">\( \nu_{1}(x, y) \) =</span></label>
-                <input type="text" id="nu1" placeholder="Enter function expression" />
+                <label for="nu1"  class="equation-label"><span class="mathjax">\( \nu_{1}(x, y) \) =</span></label>
+                <input type="text"  id="nu1" tabindex="3"  placeholder="Enter function expression"  />
             </div>
 
             <!-- Input Box for ν2(x, y) function -->
@@ -148,7 +214,7 @@
             
             <!-- Input Box for g(x, y) function -->
             <div class="input-boxes">
-                <label for="functionG" class="equation-label"><span class="mathjax">\( g_{in}(x, y) \) =</span></label>
+                <label for="functionG" class="equation-label"><span class="mathjax">&nbsp;\( g(x, y) \) =</span></label>
                 <input type="text" id="functionG" class="function-input" placeholder="Enter function expression" />
                 <div class="radios">
                     <input type="radio" id="drichleG" name="g-type" value="drichle"checked>
@@ -159,35 +225,16 @@
             </div>
 
 
-            <!-- Input Box for g2(x, y) function -->
-            <div class="input-boxes">
-                <label for="functionG2" class="equation-label"><span class="mathjax">\( g_{out}(x, y) \) =</span></label>
-                <input type="text" id="functionG2" class="function-input" placeholder="Enter function expression" />
-                <div class="radios">
-                    <input type="radio" id="drichleG2" name="g2-type" value="drichle"checked>
-                    <label for="drichleG2">Dirichlet</label>
-                    <input type="radio" id="numeralG2" name="g2-type" value="numeral">
-                    <label for="numeralG2">Neumann</label>
-                </div>
-            </div>
-
             <div class="equation-heading-container">
                 <div class="equation-headingnew">Approximation Inputs :</div>
 
             <!-- Input Box for n -->
             <div class="input-boxes">
-                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( N \) =</span></label>
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\( N \) =</span></label>
                 <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
 
-                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( NT \) =</span></label>
-                <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
-
-                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( NR \) =</span></label>
-                <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
-
-                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">&nbsp;\( Tolerance \) =</span></label>
-                <input type="text" id="degreeN" class="equation-input" placeholder="" />
-          
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">&nbsp;&nbsp;\( Tolerance \) =</span></label>
+                <input type="text" id="Tolerance" class="equation-input" placeholder="" />
             </div>
 
             <!-- Do you have Exact Solution -->
@@ -307,8 +354,8 @@
                     // Simulate completion by updating the message
                     document.getElementById("progressMessageSolve").textContent = "Solution completed!";
                 }, 5000); // Adjust the time as needed
-            });
         });
+    });
                 // document.addEventListener('DOMContentLoaded', function() {
                 //     // Add event listener to the solve button
                 //     document.getElementById("solveButton").addEventListener("click", function() {
@@ -323,41 +370,45 @@
                 // });
             </script>
 
-            <script>
 
-                document.addEventListener('DOMContentLoaded', function() {
-                // Add event listener to the Preview button
-                document.getElementById("PreviewButton").addEventListener("click", function() {
-                // Check if all relevant input boxes are filled
-                var allInputsFilled = true;
+        <script>
 
-                // Select all relevant input elements
-                var relevantInputElements = document.querySelectorAll('.input-boxes input:not(#uxy)');
+        document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener to the Preview button
+        document.getElementById("PreviewButton").addEventListener("click", function() {
+        // Check if all relevant input boxes are filled
+        var allInputsFilled = true;
 
-                // Loop through each relevant input element to check if it's empty
-                relevantInputElements.forEach(function(input) {
-                    if (input.value.trim() === '') {
-                        allInputsFilled = false;
-                        // Highlight the empty input box
-                        input.style.border = "2px solid red";
-                        // Display a message asking to fill in the details
-                        input.placeholder = "Please fill details";
-                        // Log that the input box is empty
-                        console.log(input.id + " is empty");
-                    } else {
-                        // Remove the red border and reset the placeholder
-                        input.style.border = "";
-                        input.placeholder = "";
-                        // Log that the input box is filled
-                        console.log(input.id + " is filled");
-                    }
-                });
-                // If all relevant input boxes are filled or there's no exact solution required, generate the preview
+        // Select all relevant input elements
+        var relevantInputElements = document.querySelectorAll('.input-boxes input:not(#uxy)');
+
+        // Loop through each relevant input element to check if it's empty
+        relevantInputElements.forEach(function(input) {
+            if (input.value.trim() === '') {
+                allInputsFilled = false;
+                // Highlight the empty input box
+                input.style.border = "2px solid red";
+                // Display a message asking to fill in the details
+                input.placeholder = "Please fill details";
+                // Log that the input box is empty
+                console.log(input.id + " is empty");
+            } else {
+                // Remove the red border and reset the placeholder
+                input.style.border = "";
+                input.placeholder = "";
+                // Log that the input box is filled
+                console.log(input.id + " is filled");
+            }
+        });
+
+        // If all relevant input boxes are filled or there's no exact solution required, generate the preview
         if (allInputsFilled || document.getElementById('exactSolutionNo').checked) {
             var outputBox = document.getElementById("outputBoxPreview");
             outputBox.style.display = "block";
 
             // Retrieve values from input boxes
+            var o1 = document.getElementById("o1").value;
+            var o2 = document.getElementById("o2").value;
             var radius = document.getElementById("radius").value;
             var kappa = document.getElementById("kappa").value;
             var nu1 = document.getElementById("nu1").value;
@@ -365,12 +416,17 @@
             var gamma = document.getElementById("gamma").value;
             var functionF = document.getElementById("functionF").value;
             var functionG = document.getElementById("functionG").value;
-            var functionG2 = document.getElementById("functionG2").value;
             var N = document.getElementById("degreeN").value;
-            
+            var tolerance = document.getElementById("Tolerance").value;
+
             // Function to modify terms like x^2 or y^2 to (x)^2 or (y)^2
             function modifyFunction(functionStr) {
             return functionStr.replace(/\b(x|y)\^2\b/g, '($1)^2');
+            }
+
+            // Modify functionF if it contains terms like x^2 or y^2
+            if (kappa.includes("x^2") || kappa.includes("y^2")) {
+            kappa = modifyFunction(kappa);
             }
 
             // Modify functionF if it contains terms like x^2 or y^2
@@ -398,10 +454,6 @@
             functionG = modifyFunction(functionG);
             }
 
-            // Modify functionG2 if it contains terms like x^2 or y^2
-            if (functionG2.includes("x^2") || functionG2.includes("y^2")) {
-            functionG2 = modifyFunction(functionG2);
-            }
             // Construct the equation based on the retrieved values
             var equation = "-" + kappa + " ∆u(x, y)";
             if(nu1!="0")
@@ -427,24 +479,14 @@
                 boundaryCondition = "<math><mrow> <mfrac><mi>du</mi><mi>dx</mi></mfrac> <mn>(x,y)</mn></mrow></math> = " + functionG + " on Γ" + "<sub>1</sub>";
             }
 
-            // Determine the boundary condition based on the selected radio button
-            var boundaryCondition2 = "";
-            if (document.getElementById('drichleG2').checked) {
-                boundaryCondition2 = "u(x, y) = " + functionG2 + " on Γ" + "<sub>2</sub>";
-            } else {
-                boundaryCondition2 = "<math><mrow> <mfrac><mi>du</mi><mi>dx</mi></mfrac> <mn>(x,y)</mn></mrow></math> = " + functionG2 + " on Γ" + "<sub>2</sub>";
-            }
-
             // Construct the second line of the equation based on the determined boundary condition
             // var secondLine = "<div class='equation'>" + equation + boundaryCondition + "</div>";
 
             var secondLine = "<div class='equation'>" + 
                   equation + 
                   boundaryCondition + 
-                "</div>" + 
-                "<div>" + 
-                  boundaryCondition2 + 
                 "</div>"
+
             // Update the output box content with the generated preview
             outputBox.style.fontSize = "17px"; // Set the font size of the output box
             outputBox.innerHTML = secondLine;
@@ -454,9 +496,18 @@
             }
             });
             });
+          
+         </script>
 
-            
-    </script>
+    
+    <!-- <script>
+        function updateMathJax(id) {
+            var input = document.getElementById(id).value;
+            var mathjaxSpan = document.getElementById(id + '-mathjax');
+            mathjaxSpan.textContent = input;
+            MathJax.typeset([mathjaxSpan]);
+        }
+    </script> -->
 
         </div>
     </div>

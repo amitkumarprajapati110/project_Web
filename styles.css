@@ -249,13 +249,6 @@ input[type="text"] {
 
 
 
-
-
-
-
-
-
-
 /* Increase width of functionF input box */
 #functionF {
     width: 550px; /* Adjust the width as needed */
@@ -309,50 +302,13 @@ input[type="text"] {
 
 /* Increase width of #functionG1 input box */
 #functionG {
-    width: 421px; /* Adjust the width as needed */
+    width: 431px; /* Adjust the width as needed */
     height: 45px; /* Adjust the height as needed */
     padding: 8px; /* Adjust the padding as needed */
     border: 1px solid #605b5b; /* Border color */
     border-radius: 10px; /* Rounded corners */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     
-}
-
-/* Increase width of #functionG1 input box */
-#functionG2 {
-    width: 415px; /* Adjust the width as needed */
-    height: 45px; /* Adjust the height as needed */
-    padding: 8px; /* Adjust the padding as needed */
-    border: 1px solid #605b5b; /* Border color */
-    border-radius: 10px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-#functionG3 {
-    width: 415px; /* Adjust the width as needed */
-    height: 45px; /* Adjust the height as needed */
-    padding: 8px; /* Adjust the padding as needed */
-    border: 1px solid #605b5b; /* Border color */
-    border-radius: 10px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-#functionG4 {
-    width: 415px; /* Adjust the width as needed */
-    height: 45px; /* Adjust the height as needed */
-    padding: 8px; /* Adjust the padding as needed */
-    border: 1px solid #605b5b; /* Border color */
-    border-radius: 10px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-#functionG5 {
-    width: 415px; /* Adjust the width as needed */
-    height: 45px; /* Adjust the height as needed */
-    padding: 8px; /* Adjust the padding as needed */
-    border: 1px solid #605b5b; /* Border color */
-    border-radius: 10px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 #nu1 {
@@ -373,15 +329,14 @@ input[type="text"] {
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-
-
 #degreeN {
-    width: 85px; /* Adjust the width as needed */
+    width: 110px; /* Adjust the width as needed */
 }
 
 #Tolerance {
     width: 110px; /* Adjust the width as needed */
 }
+
 
 #myCanvas {
     border: 1px solid rgb(254, 252, 252); /* Add border for visualization */
@@ -514,3 +469,6 @@ input[type="text"] {
 .solve-button-container button {
     margin-right: 10px; /* Adjust this value to increase/decrease the gap */
 }
+
+
+
