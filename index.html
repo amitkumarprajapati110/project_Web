@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title style="font-family: 'Times New Roman', Times, serif;">Solution of Elliptic Equation On Annulus Using SEM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+    <div class="container">
+        <div class="inner-container">
+            <!-- Navbar (sit on top) -->
+    <!-- Navigation bar -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <span class="navbar-brand">LSQNSEM</span>
+                </div>
+                <div class="navbar-right">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><!-- Eigen --></a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"><!-- Eigen --></a></li>
+                    </ul>
+                </div>
+            </nav>
+            <h1>Solution of Elliptic Equation On Annulus Using SEM</h1>
+
+            <div class="equation-container">
+                <div class="equation-heading">Equation:</div>
+                <div class="equation-wrapper">
+                    <p id="equation">
+                        \(-&kappa;∆u(x, y) + &nu;_1(x, y)u_x(x, y) + &nu;_2(x, y)u_y(x, y) + &gamma;(x, y)u(x, y) = f(x, y) \text{ in } &Omega;\)<br>
+                    </p>
+                    <div class="second-line">\(u(x, y) = g_i(x, y)\) &nbsp; or  &nbsp; \(\frac{du}{dx}(x, y) = g_i(x, y) \text{ on } &Gamma;_i\)</div>
+                </div>              
+            </div>
+            
+
+            <!-- Annulus -->
+            <canvas id="myCanvas" width="240" height="200"></canvas>
+            <script>
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+
+            // Define parameters
+            // setting position
+            var centerX = 100;
+            var centerY = 95;
+
+            var innerRadius = 30;
+            var outerRadii = [50, 70, 90]; // Radii for the outer circles
+
+            // Draw the outer circles
+            outerRadii.forEach(function(radius) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+            });
+
+            // Draw the inner circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw the lines connecting the circles to form an annulus
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY + innerRadius); // Move to top point of last outer circle
+            ctx.lineTo(centerX, centerY + outerRadii[outerRadii.length - 1]); // Connect to bottom point of last outer circle
+            ctx.moveTo(centerX,centerY - innerRadius);
+            ctx.lineTo(centerX,centerY - outerRadii[outerRadii.length-1])
+            ctx.moveTo(centerX - outerRadii[outerRadii.length - 1], centerY); // Move to the left point of the outermost circle
+            ctx.lineTo(centerX - innerRadius, centerY);
+            ctx.moveTo(centerX + outerRadii[outerRadii.length - 1], centerY); // Move to the left point of the outermost circle
+            ctx.lineTo(centerX + innerRadius, centerY);
+            ctx.moveTo(centerX - (innerRadius*0.7071067812) , centerY - (innerRadius*0.7071067812)); // Move to the top-left corner
+            ctx.lineTo(centerX - (outerRadii[outerRadii.length-1]*0.7071067812) , centerY - (outerRadii[outerRadii.length-1]*0.7071067812)); // Connect to the bottom-right corner
+            ctx.moveTo(centerX - (innerRadius*0.7071067812) , centerY + (innerRadius*0.7071067812)); // Move to the top-left corner
+            ctx.lineTo(centerX - (outerRadii[outerRadii.length-1]*0.7071067812) , centerY + (outerRadii[outerRadii.length-1]*0.7071067812));
+            ctx.moveTo(centerX + (innerRadius*0.7071067812) , centerY - (innerRadius*0.7071067812)); // Move to the top-left corner
+            ctx.lineTo(centerX + (outerRadii[outerRadii.length-1]*0.7071067812) , centerY - (outerRadii[outerRadii.length-1]*0.7071067812));
+            ctx.moveTo(centerX + (innerRadius*0.7071067812) , centerY + (innerRadius*0.7071067812)); // Move to the top-left corner
+            ctx.lineTo(centerX + (outerRadii[outerRadii.length-1]*0.7071067812) , centerY + (outerRadii[outerRadii.length-1]*0.7071067812));
+            ctx.stroke();
+
+            // Draw the crossing lines
+            ctx.beginPath();
+            
+            ctx.stroke();
+            </script>
+ 
+ 
+            <!-- Input Boxes for o1, o2, and radius in radians -->
+            <div class="equation-heading-container">
+                <div class="equation-headingnew">Domain Inputs :</div>
+                <div class="input-boxes">
+                    <!-- Input for o2 -->
+                    <div class="input-pair">
+                        <label for="radius" class="equation-label parameter-label"><span id="radius-letter" class="mathjax">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\( r_1 \)</span> =</label>
+                        <input type="text" id="radius" />
+                    </div>
+                    <!-- Input for radius -->
+                    <div class="input-pair">
+                        <label for="radius" class="equation-label parameter-label"><span id="radius-letter" class="mathjax">\( r_2 \)</span> =</label>
+                        <input type="text" id="radius" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="equation-heading-container">
+                <div class="equation-headingnew">Equation Input :</div>
+
+            <!-- Input Box for κ -->
+            <div class="input-boxes">
+                
+                <div class="input-containerk">
+                    <label for="kappa" class="equation-label"><span id="kappa-letter" class="mathjax">\(\kappa \)</span> =</label>
+                    <input type="text" id="kappa" />
+                </div>
+            </div>
+            
+
+            <!-- Input Box for ν1(x, y) function -->
+            <div class="input-boxes">
+                <label for="nu1" class="equation-label"><span class="mathjax">\( \nu_{1}(x, y) \) =</span></label>
+                <input type="text" id="nu1" placeholder="Enter function expression" />
+            </div>
+
+            <!-- Input Box for ν2(x, y) function -->
+            <div class="input-boxes">
+                <label for="nu2" class="equation-label"><span class="mathjax">\( \nu_{2}(x, y) \) =</span></label>
+                <input type="text" id="nu2" placeholder="Enter function expression" />
+            </div>
+            
+            <!-- Input Box for γ(x, y) function -->
+            <div class="input-boxes">
+                <label for="gamma" class="equation-label"><span class="mathjax">&nbsp;\( \gamma(x, y) \) =</span></label>
+                <input type="text" id="gamma" placeholder="Enter function expression" />
+            </div>
+
+
+           <!-- Input Box for f(x, y) function -->
+            <div class="input-boxes">
+                &nbsp;
+                <label for="functionF" class="equation-label"><span class="mathjax">\( f(x, y) \) =</span></label>
+                <input type="text" id="functionF" placeholder="Enter function expression" />
+            </div>
+            
+            <!-- Input Box for g(x, y) function -->
+            <div class="input-boxes">
+                <label for="functionG" class="equation-label"><span class="mathjax">\( g_{in}(x, y) \) =</span></label>
+                <input type="text" id="functionG" class="function-input" placeholder="Enter function expression" />
+                <div class="radios">
+                    <input type="radio" id="drichleG" name="g-type" value="drichle"checked>
+                    <label for="drichleG">Dirichlet</label>
+                    <input type="radio" id="numeralG" name="g-type" value="numeral">
+                    <label for="numeralG">Neumann</label>
+                </div>
+            </div>
+
+
+            <!-- Input Box for g2(x, y) function -->
+            <div class="input-boxes">
+                <label for="functionG2" class="equation-label"><span class="mathjax">\( g_{out}(x, y) \) =</span></label>
+                <input type="text" id="functionG2" class="function-input" placeholder="Enter function expression" />
+                <div class="radios">
+                    <input type="radio" id="drichleG2" name="g2-type" value="drichle"checked>
+                    <label for="drichleG2">Dirichlet</label>
+                    <input type="radio" id="numeralG2" name="g2-type" value="numeral">
+                    <label for="numeralG2">Neumann</label>
+                </div>
+            </div>
+
+            <div class="equation-heading-container">
+                <div class="equation-headingnew">Approximation Inputs :</div>
+
+            <!-- Input Box for n -->
+            <div class="input-boxes">
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( N \) =</span></label>
+                <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
+
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( NT \) =</span></label>
+                <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
+
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">\( NR \) =</span></label>
+                <input type="text" id="degreeN" class="equation-input" placeholder="Enter the degree" />
+
+                <label for="degreeN" class="equation-label parameter-label"><span class="mathjax">&nbsp;\( Tolerance \) =</span></label>
+                <input type="text" id="degreeN" class="equation-input" placeholder="" />
+          
+            </div>
+
+            <!-- Do you have Exact Solution -->
+            <div class="newsuggestion" style="margin-top: 10px; display: flex; align-items: center;"> <!-- Added display: flex and align-items: center -->
+                <span class="equation-labels"><strong>Do you have Exact Solution ?</strong>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="radios">
+                    <input type="radio" id="exactSolutionYes" name="exactSolution" value="yes">
+                    <label for="exactSolutionYes">Yes</label>
+                    <input type="radio" id="exactSolutionNo" name="exactSolution" value="no">
+                    <label for="exactSolutionNo">No</label>
+                </div>
+            </div>
+            
+            
+            <div class="equation-heading-container">
+            <!-- Exact Solution Heading -->
+            <div id="exactSolutionHeading" style="display: none;">
+                <div class="equation-headingnew">Exact Solution :</div>
+                <div class="input-boxes">
+                    &nbsp;
+                    <label for="uxy" class="equation-label"><span class="mathjax">\( u(x, y) \) =</span></label>
+                    <input type="text" id="uxy" placeholder="Enter function expression" />
+                </div>
+            </div>
+            </div>
+            <!-- Error Calculation Heading -->
+            <!-- Error Calculation Heading -->
+            <div id="errorCalculationHeading" style="display: none; margin-bottom: 5px;"> <!-- Adjusted margin-bottom -->
+                <div class="equation-headingnew">Error Calculation :</div>
+                <div class="input-boxes">
+                    <p style="font-size: 18px; margin-top: 0; margin-bottom: 0;">In which norm error should be calculated&nbsp;&nbsp;&nbsp;</p> <!-- Adjusted margins -->
+                    <select id="errorNormDropdown" style="width: 150px; height: 29px; border-radius: 10px;">
+                        <option value="" selected>Select Option</option>
+                        <option value=" ">L&#xB2;</option>
+                        <option value=" ">L&infin;</option>
+                        <option value=" ">H&#xB9;</option>
+                        <option value="h2">H&#xB2;</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Output Box -->
+            <div id="outputBoxPreview" class="output-box" style="display: none;">
+                <p id="progressMessagePreview">Your preview will appear here...</p>
+            </div>
+
+            <!-- Solve Button -->
+            <div class="solve-button-container">
+                <button id="PreviewButton">Preview</button>
+                <button id="solveButton">Solve</button>
+            </div>
+            
+            <!-- Empty space after the Solve button -->
+            <div style="height: 50px;"></div>
+
+
+            <!-- Output Box -->
+            <div id="outputBoxSolve" class="output-box" style="display: none;">
+                <p id="progressMessageSolve">Your work in progress...</p>
+            </div>
+
+
+            <script type="text/javascript" async
+                src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+            </script>
+            <script src="script.js"></script>
+            <script>
+             
+             document.addEventListener('DOMContentLoaded', function () {
+            // Select the radio buttons
+            var yesRadio = document.getElementById('exactSolutionYes');
+            var noRadio = document.getElementById('exactSolutionNo');
+
+            // Select the elements to show or hide
+            var exactSolutionHeading = document.getElementById('exactSolutionHeading');
+            var uInputBox = document.getElementById('uxy');
+            var errorCalculationHeading = document.getElementById('errorCalculationHeading');
+            var errorNormDropdown = document.getElementById('errorNormDropdown');
+
+            // Function to toggle visibility based on radio button selection
+            function toggleVisibility() {
+                if (yesRadio.checked) {
+                    exactSolutionHeading.style.display = 'block';
+                    uInputBox.style.display = 'block';
+                    errorCalculationHeading.style.display = 'block';
+                    errorNormDropdown.style.display = 'block';
+                } else {
+                    exactSolutionHeading.style.display = 'none';
+                    uInputBox.style.display = 'none';
+                    errorCalculationHeading.style.display = 'none';
+                    errorNormDropdown.style.display = 'none';
+                }
+            }
+
+            // Initial visibility setup
+            toggleVisibility();
+
+            // Event listeners for radio buttons
+            yesRadio.addEventListener('change', toggleVisibility);
+            noRadio.addEventListener('change', toggleVisibility);
+        });
+
+            </script>
+
+            <script>
+                 document.addEventListener('DOMContentLoaded', function() {
+                // Add event listener to the solve button
+                document.getElementById("solveButton").addEventListener("click", function() {
+                // Show the output box for Solve
+                document.getElementById("outputBoxSolve").style.display = "block";
+
+                // Set initial text
+                document.getElementById("progressMessageSolve").textContent = "Your work in progress...";
+
+                // Simulate some processing time (optional)
+                setTimeout(function() {
+                    // Simulate completion by updating the message
+                    document.getElementById("progressMessageSolve").textContent = "Solution completed!";
+                }, 5000); // Adjust the time as needed
+            });
+        });
+                // document.addEventListener('DOMContentLoaded', function() {
+                //     // Add event listener to the solve button
+                //     document.getElementById("solveButton").addEventListener("click", function() {
+                //         // Toggle the visibility of the output box
+                //         var outputBox = document.getElementById("outputBox");
+                //         if (outputBox.style.display === "none") {
+                //             outputBox.style.display = "block";
+                //         } else {
+                //             outputBox.style.display = "none";
+                //         }
+                //     });
+                // });
+            </script>
+
+            <script>
+
+                document.addEventListener('DOMContentLoaded', function() {
+                // Add event listener to the Preview button
+                document.getElementById("PreviewButton").addEventListener("click", function() {
+                // Check if all relevant input boxes are filled
+                var allInputsFilled = true;
+
+                // Select all relevant input elements
+                var relevantInputElements = document.querySelectorAll('.input-boxes input:not(#uxy)');
+
+                // Loop through each relevant input element to check if it's empty
+                relevantInputElements.forEach(function(input) {
+                    if (input.value.trim() === '') {
+                        allInputsFilled = false;
+                        // Highlight the empty input box
+                        input.style.border = "2px solid red";
+                        // Display a message asking to fill in the details
+                        input.placeholder = "Please fill details";
+                        // Log that the input box is empty
+                        console.log(input.id + " is empty");
+                    } else {
+                        // Remove the red border and reset the placeholder
+                        input.style.border = "";
+                        input.placeholder = "";
+                        // Log that the input box is filled
+                        console.log(input.id + " is filled");
+                    }
+                });
+                // If all relevant input boxes are filled or there's no exact solution required, generate the preview
+        if (allInputsFilled || document.getElementById('exactSolutionNo').checked) {
+            var outputBox = document.getElementById("outputBoxPreview");
+            outputBox.style.display = "block";
+
+            // Retrieve values from input boxes
+            var radius = document.getElementById("radius").value;
+            var kappa = document.getElementById("kappa").value;
+            var nu1 = document.getElementById("nu1").value;
+            var nu2 = document.getElementById("nu2").value;
+            var gamma = document.getElementById("gamma").value;
+            var functionF = document.getElementById("functionF").value;
+            var functionG = document.getElementById("functionG").value;
+            var functionG2 = document.getElementById("functionG2").value;
+            var N = document.getElementById("degreeN").value;
+            
+            // Function to modify terms like x^2 or y^2 to (x)^2 or (y)^2
+            function modifyFunction(functionStr) {
+            return functionStr.replace(/\b(x|y)\^2\b/g, '($1)^2');
+            }
+
+            // Modify functionF if it contains terms like x^2 or y^2
+            if (nu1.includes("x^2") || nu1.includes("y^2")) {
+            nu1 = modifyFunction(nu1);
+            }
+
+            // Modify functionF if it contains terms like x^2 or y^2
+            if (nu2.includes("x^2") || nu2.includes("y^2")) {
+            nu2 = modifyFunction(nu2);
+            }
+
+            // Modify functionF if it contains terms like x^2 or y^2
+            if (gamma.includes("x^2") || gamma.includes("y^2")) {
+            gamma = modifyFunction(nu2);
+            }
+
+            // Modify functionF if it contains terms like x^2 or y^2
+            if (functionF.includes("x^2") || functionF.includes("y^2")) {
+            functionF = modifyFunction(functionF);
+            }
+
+            // Modify functionG if it contains terms like x^2 or y^2
+            if (functionG.includes("x^2") || functionG.includes("y^2")) {
+            functionG = modifyFunction(functionG);
+            }
+
+            // Modify functionG2 if it contains terms like x^2 or y^2
+            if (functionG2.includes("x^2") || functionG2.includes("y^2")) {
+            functionG2 = modifyFunction(functionG2);
+            }
+            // Construct the equation based on the retrieved values
+            var equation = "-" + kappa + " ∆u(x, y)";
+            if(nu1!="0")
+            {
+                equation = equation + " + " + nu1 + " u" + "<sub>x</sub>" + "(x, y)";
+            }
+            if(nu2!="0")
+            {
+                equation = equation + " + " + nu2 + " u" + "<sub>y</sub>" + "(x, y)";
+            }
+            if(gamma!="0")
+            {
+                equation = equation + " + " + gamma + " u(x, y) ";
+            }
+
+            equation = equation + " = " + functionF + " in Ω<br>";
+
+            // Determine the boundary condition based on the selected radio button
+            var boundaryCondition = "";
+            if (document.getElementById('drichleG').checked) {
+                boundaryCondition = "u(x, y) = " + functionG + " on Γ" + "<sub>1</sub>";
+            } else {
+                boundaryCondition = "<math><mrow> <mfrac><mi>du</mi><mi>dx</mi></mfrac> <mn>(x,y)</mn></mrow></math> = " + functionG + " on Γ" + "<sub>1</sub>";
+            }
+
+            // Determine the boundary condition based on the selected radio button
+            var boundaryCondition2 = "";
+            if (document.getElementById('drichleG2').checked) {
+                boundaryCondition2 = "u(x, y) = " + functionG2 + " on Γ" + "<sub>2</sub>";
+            } else {
+                boundaryCondition2 = "<math><mrow> <mfrac><mi>du</mi><mi>dx</mi></mfrac> <mn>(x,y)</mn></mrow></math> = " + functionG2 + " on Γ" + "<sub>2</sub>";
+            }
+
+            // Construct the second line of the equation based on the determined boundary condition
+            // var secondLine = "<div class='equation'>" + equation + boundaryCondition + "</div>";
+
+            var secondLine = "<div class='equation'>" + 
+                  equation + 
+                  boundaryCondition + 
+                "</div>" + 
+                "<div>" + 
+                  boundaryCondition2 + 
+                "</div>"
+            // Update the output box content with the generated preview
+            outputBox.style.fontSize = "17px"; // Set the font size of the output box
+            outputBox.innerHTML = secondLine;
+
+            // Log that the output box is displayed
+            console.log("Output box displayed");
+            }
+            });
+            });
+
+            
+    </script>
+
+        </div>
+    </div>
+</body>
+</html>
